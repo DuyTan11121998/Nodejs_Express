@@ -5,8 +5,12 @@ var app =_();
 
 var port =3000;
 
+//de truy cap den style.css
 app.use("/assets",_.static(__dirname+"/publish"));
+
 app.use (cookiePaster());
+//set up package EJS
+app.set("view engine","ejs");
 
 //custom middware
 // return một cái url 
@@ -16,14 +20,16 @@ app.use("/",function(req,res,next){
     next(); //để các request phía sau tiếp tục được
 })
 
-//trả về một cookies dưới dạng JSON
+//render trả về một index.ejs
 app.get("/",function(req,res){
-    console.log("Cookei: ",req.cookies);
-    res.send(`
-        <link href="/assets/style.css" rel="stylesheet" type="text/css">
-        <h1> Hello Express</h1>
-        <p> Request time : ${req.requesTime}</p>
-    `);
+    res.render("index.ejs");
+})
+
+
+//user/123
+//render tra ve cho client
+app.get("/user/:id",function(req,res){
+    res.render("user.ejs",{ID:req.params.id});
 })
 
 app.get("/api",function(req,res){
@@ -31,12 +37,6 @@ app.get("/api",function(req,res){
         firstname: "Mai",
         lastName: "Hoa"
     })
-})
-//user/123
-//lấy giá trị của biến lưu vào cookie
-app.get("/user/:id",function(req,res){
-    res.cookie("userName",req.params.id);
-    res.send(`<h1> User: ${req.params.id}<\h1>`);
 })
 
 app.listen(port,function(){
