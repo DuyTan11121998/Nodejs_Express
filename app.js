@@ -34,17 +34,25 @@ app.get("/",function(req,res){
 
 //user/123
 //render tra ve cho client
-app.get("/user/:id",function(req,res){
-    res.render("user.ejs",{ID:req.params.id, queryString: req.query.qstr });
-})
+
  
-app.get("/api",function(req,res){
-    res.json({
+app.get("/api/user:id",function(req,res){
+    //get data from databse;
+    var result = {
         firstname: "Mai",
         lastName: "Hoa"
-    })
+    };
+    res.json(result);
 })
-
+app.post("/api/user",jsonParser,function(req,res){
+    //create new and save to the database
+})
+app.put("/api/user",jsonParser,function(req,res){
+    //update user and save to the database
+})
+app.delete("/api/user/:id",function(req,res){
+    //delete from database
+})
 app.post("/login",urlencodedParser, function(req,res){
     res.send("Wellcome, "+ req.body.username);
     console.log(req.body.username);
@@ -56,6 +64,9 @@ app.post("/loginJson",jsonParser,function(req,res){
     console.log(req.body.firstName);
     console.log(req.body.lastName);
 })
+
+
+
 app.listen(port,function(){
     console.log("Server is listening",port);
 })
